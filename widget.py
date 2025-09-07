@@ -1,4 +1,4 @@
-from src.masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_card_number
 from datetime import datetime
 
 
@@ -12,7 +12,9 @@ def mask_account_card(card_info: str) -> str:
             return f"{card_type} {get_mask_card_number(card_number)}"
         return "Некорректный ввод"
     elif card_type == "Счет":
-        return f"{card_type} {get_mask_account(card_number)}"
+        # Маскируем большую часть номера счета звездочками, оставляя последние 4 цифры.
+        masked_number = "*" * (len(card_number) - 4) + card_number[-4:]
+        return f"{card_type} **{masked_number}"
     else:
         return "Некорректный ввод"
 
@@ -27,4 +29,4 @@ def get_date(date_str: str) -> str:
 
 
 if __name__ == "__main__":
-    print(mask_account_card("Visa Platinum 690224245640522800"))
+    print(mask_account_card("Счет 1234567890123456"))
